@@ -1,0 +1,4 @@
+services:
+  dependency_injection_exercise.api_client: 
+    class: Drupal\dependency_injection_exercise\Services\DependencyInjectionExerciseService
+    arguments: ['@http_client']
