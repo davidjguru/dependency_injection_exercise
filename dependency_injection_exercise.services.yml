@@ -1,4 +1,4 @@
 services:
   dependency_injection_exercise.api_client: 
     class: Drupal\dependency_injection_exercise\Service\DependencyInjectionExerciseService
-    arguments: ['@http_client', '@config_factory']
+    arguments: ['@http_client', '@config_factory', '@messenger']
