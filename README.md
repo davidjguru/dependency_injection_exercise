@@ -14,6 +14,10 @@ It shows how to approach service implementation and adaptation tasks in the cont
 1. On the path /dropsolid/example/photos the breadcrumb should be Home > Dropsolid > Example > Photos
 1. Take over the LanguageManager service in a way that doesn't preclude others from also taking over the LanguageManager service
 
+## Questions 
+
+* **Why are you defining an interface for the new service?** It is considered "best practice" to do so. See "Defining a service" in [api.drupal.org/container/9.4.x](https://api.drupal.org/api/drupal/core%21core.api.php/group/container/9.4.x).
+
 ## Documentation
 
 - [Services and dependency injection in Drupal 8+](https://www.drupal.org/docs/drupal-apis/services-and-dependency-injection/services-and-dependency-injection-in-drupal-8)
