@@ -2,9 +2,11 @@
 
 namespace Drupal\dependency_injection_exercise\Plugin\Block;
 
-use Drupal\Component\Serialization\Json;
 use Drupal\Core\Block\BlockBase;
-use GuzzleHttp\Exception\GuzzleException;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\dependency_injection_exercise\Service\DependencyInjectionExerciseService;
+use Drupal\dependency_injection_exercise\Service\DependencyInjectionExerciseServiceInterface;
 
 /**
  * Provides a 'RestOutputBlock' block.
@@ -14,48 +16,50 @@ use GuzzleHttp\Exception\GuzzleException;
  *  admin_label = @Translation("Rest output block"),
  * )
  */
-class RestOutputBlock extends BlockBase {
+class RestOutputBlock extends BlockBase implements ContainerFactoryPluginInterface{
+
+  /**
+   * The DependencyInjectionExerciseService resource.
+   *
+   * @var \Drupal\dependency_injection_exercise\Service\DependencyInjectionExerciseService
+   */
+  protected $diesResource;
+
+  /**
+   * Constructs a new RestOutputBlock.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin ID for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param Drupal\dependency_injection_exercise\Service\DependencyInjectionExerciseServiceInterface $dies_resource
+   *   The dependency injection exercise service.
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, DependencyInjectionExerciseServiceInterface $dies_resource) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+
+    $this->diesResource = $dies_resource;
+  }
 
   /**
    * {@inheritdoc}
    */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('dependency_injection_exercise.api_client'),
+    );
+  }
+  /**
+   * {@inheritdoc}
+   */
   public function build(): array {
-    // Setup build caching.
-    $build = [
-      '#cache' => [
-        'max-age' => 60,
-        'contexts' => [
-          'url',
-        ],
-      ],
-    ];
-
-    // Try to obtain the photo data via the external API.
-    try {
-      $response = \Drupal::httpClient()->request('GET', sprintf('https://jsonplaceholder.typicode.com/albums/%s/photos', random_int(1, 20)));
-      $raw_data = $response->getBody()->getContents();
-      $data = Json::decode($raw_data);
-    }
-    catch (GuzzleException $e) {
-      $build['error'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $this->t('No photos available.'),
-      ];
-      return $build;
-    }
-
-    // Build a listing of photos from the photo data.
-    $build['photos'] = array_map(static function ($item) {
-      return [
-        '#theme' => 'image',
-        '#uri' => $item['thumbnailUrl'],
-        '#alt' => $item['title'],
-        '#title' => $item['title'],
-      ];
-    }, $data);
-
-    return $build;
+    // Call to the processing method from Service.
+    return $diesResource->showPhotos(TRUE);
   }
 
 }
