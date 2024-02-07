@@ -2,7 +2,7 @@
 
 namespace Drupal\dependency_injection_exercise\Service;
 
-use DependencyInjectionExerciseServiceInterface;
+use Drupal\dependency_injection_exercise\Service\DependencyInjectionExerciseServiceInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\InmutableConfig;
