@@ -17,7 +17,7 @@ interface DependencyInjectionExerciseServiceInterface {
   /**
    * Get resources from external API connections.
    *
-   * @param bool|null $randomize
+   * @param bool $randomize
    *   Boolean indicating if use fixed value for results or not.
    *
    * @return array
