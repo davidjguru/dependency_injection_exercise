@@ -2,20 +2,16 @@
 
 namespace Drupal\dependency_injection_exercise\Service;
 
-use Drupal\dependency_injection_exercise\Service\DependencyInjectionExerciseServiceInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Config\InmutableConfig;
-use GuzzleHttp\ClientInterface;
-use Exception;
-use GuzzleHttp\Exception\BadResponseException;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\ServerException;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\MessengerInterface;
-use Drupal\Component\Serialization\Json;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ServerException;
 
 /**
  * Dependency Injection Exercise Service Class.
@@ -27,7 +23,7 @@ use Drupal\Component\Serialization\Json;
  * @author David Rodríguez, @davidjguru
  * @link https://therussianlullaby.com
  */
-class DependencyInjectionExerciseService implements DependencyInjectionExerciseServiceInterface{
+class DependencyInjectionExerciseService implements DependencyInjectionExerciseServiceInterface {
 
   use StringTranslationTrait;
 
@@ -98,12 +94,13 @@ class DependencyInjectionExerciseService implements DependencyInjectionExerciseS
   /**
    * Get resources from external API connections.
    *
-   * @param bool  $randomize (optional)
+   * @param bool $randomize
    *   Mark if random value is needed.
+   *
    * @return array
    *   Returns a set of images.
    *
-   * @throws \Exception
+   * @throws Exception
    *   Throws up a generic Exception if no connection was possible.
    * @throws \GuzzleHttp\Exception\GuzzleException
    *   Throws up a base GuzzleException if there was a generic error.
@@ -115,22 +112,12 @@ class DependencyInjectionExerciseService implements DependencyInjectionExerciseS
    *   Throws up a Guzzle BadResponseException from a response level error.
    * @throws \GuzzleHttp\Exception\ServerException
    *   Throws up a Guzzle ServerException from 500 level errors.
-
    */
   public function getResources(bool $randomize) {
     // Review if use random value or not.
     $page = $randomize ? random_int(1, 20) : 5;
     // Mount the required URL.
     $this->diesUrl = $this->getConfig->get('target') . $page . '/photos';
-    // Setup build caching.
-    $build = [
-      '#cache' => [
-      'max-age' => 60,
-      'contexts' => [
-        'url',
-        ],
-      ],
-    ];
 
     // Try to obtain the photo data via the external API.
     try {
@@ -139,34 +126,34 @@ class DependencyInjectionExerciseService implements DependencyInjectionExerciseS
     }
 
     catch (ServerException $e) {
-      $this->diesLogger->error(t('ServerException - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
-      $this->diesMessenger->addMessage(t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
-      $data['error'] = $this->t($e->getMessage());
+      $this->diesLogger->error($this->t('ServerException - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
+      $this->diesMessenger->addMessage($this->t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
+      $data['error'] = $this->t('Message: @error', ['@error' => $e->getMessage()]);
     }
     catch (ClientException $e) {
-      $this->diesLogger->error(t('ClientException - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
-      $this->diesMessenger->addMessage(t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
-      $data['error'] = $this->t($e->getMessage());
+      $this->diesLogger->error($this->t('ClientException - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
+      $this->diesMessenger->addMessage($this->t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
+      $data['error'] = $this->t('Message: @error', ['@error' => $e->getMessage()]);
     }
     catch (BadResponseException $e) {
-      $this->diesLogger->error(t('BadResponseException - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
-      $this->diesMessenger->addMessage(t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
-      $data['error'] = $this->t($e->getMessage());
+      $this->diesLogger->error($this->t('BadResponseException - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
+      $this->diesMessenger->addMessage($this->t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
+      $data['error'] = $this->t('Message: @error', ['@error' => $e->getMessage()]);
     }
     catch (RequestException $e) {
-      $this->diesLogger->error(t('Request Exception - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
-      $this->diesMessenger->addMessage(t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
-      $data['error'] = $this->t($e->getMessage());
+      $this->diesLogger->error($this->t('Request Exception - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
+      $this->diesMessenger->addMessage($this->t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
+      $data['error'] = $this->t('Message: @error', ['@error' => $e->getMessage()]);
     }
     catch (GuzzleException $e) {
-      $this->diesLogger->error(t('GuzzleException - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
-      $this->diesMessenger->addMessage(t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
-      $data['error'] = $this->t($e->getMessage());
+      $this->diesLogger->error($this->t('GuzzleException - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
+      $this->diesMessenger->addMessage($this->t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
+      $data['error'] = $this->t('Message: @error', ['@error' => $e->getMessage()]);
     }
     catch (Exception $e) {
-      $this->diesLogger->error(t('Exception - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
-      $this->diesMessenger->addMessage(t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
-      $data['error'] = $this->t($e->getMessage());
+      $this->diesLogger->error($this->t('Exception - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
+      $this->diesMessenger->addMessage($this->t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
+      $data['error'] = $this->t('Message: @error', ['@error' => $e->getMessage()]);
     } finally {
       return $data;
     }
@@ -175,34 +162,45 @@ class DependencyInjectionExerciseService implements DependencyInjectionExerciseS
   /**
    * Show resources from external API connections.
    *
-   * @param bool  $randomize (optional)
+   * @param bool $randomize
    *   Mark if random value is needed.
+   *
    * @return array
    *   Returns a set of images.
    */
-  public function showPhotos(bool $randomize=NULL) {
+  public function showPhotos(bool $randomize = FALSE) {
 
     $data = $this->getResources($randomize);
-    if(array_key_exists('error', $data)) {
+    if (array_key_exists('error', $data)) {
       // Prepares an error message for user in screen.
       $build['error'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $this->t('No photos available. Error: ' . $data['error']),
+        '#value' => $this->t('No photos available. Error: @erro', ['@error' => $data['error']]),
       ];
     }
     else {
+      // Setup build caching.
+      $build = [
+        '#cache' => [
+          'max-age' => 60,
+          'contexts' => [
+            'url',
+          ],
+        ],
+      ];
       // Build a listing of photos from the photo data.
       $build['photos'] = array_map(static function ($item) {
-      return [
-        '#theme' => 'image',
-        '#uri' => $item['thumbnailUrl'],
-        '#alt' => $item['title'],
-        '#title' => $item['title'],
-      ];
-    }, $data);
+        return [
+          '#theme' => 'image',
+          '#uri' => $item['thumbnailUrl'],
+          '#alt' => $item['title'],
+          '#title' => $item['title'],
+        ];
+      }, $data);
     }
 
     return $build;
   }
+
 }

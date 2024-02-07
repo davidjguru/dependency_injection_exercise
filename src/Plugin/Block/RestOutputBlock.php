@@ -4,9 +4,8 @@ namespace Drupal\dependency_injection_exercise\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\dependency_injection_exercise\Service\DependencyInjectionExerciseService;
 use Drupal\dependency_injection_exercise\Service\DependencyInjectionExerciseServiceInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a 'RestOutputBlock' block.
@@ -16,7 +15,7 @@ use Drupal\dependency_injection_exercise\Service\DependencyInjectionExerciseServ
  *  admin_label = @Translation("Rest output block"),
  * )
  */
-class RestOutputBlock extends BlockBase implements ContainerFactoryPluginInterface{
+class RestOutputBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * The DependencyInjectionExerciseService resource.
@@ -54,12 +53,13 @@ class RestOutputBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $container->get('dependency_injection_exercise.api_client'),
     );
   }
+
   /**
    * {@inheritdoc}
    */
   public function build(): array {
     // Call to the processing method from Service.
-    return $diesResource->showPhotos(TRUE);
+    return $this->diesResource->showPhotos(TRUE);
   }
 
 }

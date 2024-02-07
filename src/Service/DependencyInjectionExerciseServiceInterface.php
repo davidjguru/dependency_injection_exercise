@@ -17,8 +17,9 @@ interface DependencyInjectionExerciseServiceInterface {
   /**
    * Get resources from external API connections.
    *
-   * @param bool|null  $randomize
+   * @param bool|null $randomize
    *   Boolean indicating if use fixed value for results or not.
+   *
    * @return array
    *   Returns a set of results.
    */
@@ -27,8 +28,9 @@ interface DependencyInjectionExerciseServiceInterface {
   /**
    * Show resources from external API connections.
    *
-   * @param bool|null  $randomize
+   * @param bool|null $randomize
    *   Boolean indicating if use fixed value for results or not.
+   *
    * @return array
    *   Returns a set of images.
    */

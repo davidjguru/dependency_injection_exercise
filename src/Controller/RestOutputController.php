@@ -3,9 +3,8 @@
 namespace Drupal\dependency_injection_exercise\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\dependency_injection_exercise\Service\DependencyInjectionExerciseService;
 use Drupal\dependency_injection_exercise\Service\DependencyInjectionExerciseServiceInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * RestOutputController Class.
@@ -51,6 +50,7 @@ class RestOutputController extends ControllerBase {
       $container->get('dependency_injection_exercise.api_client')
     );
   }
+
   /**
    * Displays the photos.
    *
