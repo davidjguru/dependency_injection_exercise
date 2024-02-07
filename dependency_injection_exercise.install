@@ -11,12 +11,49 @@ use Drupal\menu_link_content\Entity\MenuLinkContent;
  * Implements hook_install().
  */
 function dependency_injection_exercise_install(): void {
-  MenuLinkContent::create([
-    'title' => 'Photos',
-    'link' => [
-      'uri' => 'internal:/dropsolid/example/photos',
-    ],
-    'menu_name' => 'main',
-    'expanded' => TRUE,
-  ])->save();
+  // Check if 'Photos' already exists as menu item.
+  $links = [];
+  $menu_name = 'main';
+  $storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+  $menu_links = $storage->loadByProperties(['menu_name' => $menu_name]);
+  foreach ($menu_links as $menu_link) {
+    $links[] = $menu_link->title->value;
+  }
+
+  if (!in_array('Photos', $links)) {
+    // If not exists then create new menu item.
+    MenuLinkContent::create([
+      'title' => 'Photos',
+      'link' => [
+        'uri' => 'internal:/dropsolid/example/photos',
+      ],
+      'menu_name' => 'main',
+      'expanded' => TRUE,
+    ])->save();
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function dependency_injection_exercise_uninstall(): void {
+  // Load all the existing menu items from 'main' menu.
+  $links = [];
+  $menu_name = 'main';
+  $storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+  $menu_links = $storage->loadByProperties(['menu_name' => $menu_name]);
+
+  // Loop over all the existing menu items filtering by title.
+  foreach ($menu_links as $menu_link) {
+    if ($menu_link->title->value == 'Photos') {
+      $links[] = $menu_link;
+    }
+  }
+
+  // Now we will delete every existing 'Photos' menu item.
+  foreach ($links as $index => $menu_item) {
+    $menu_link = \Drupal::entityTypeManager()->getStorage('menu_link_content')->load($links[$index]->id->value);
+    $menu_link->delete();
+  }
+
 }
