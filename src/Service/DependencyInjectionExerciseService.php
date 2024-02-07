@@ -5,7 +5,8 @@ namespace Drupal\dependency_injection_exercise\Service;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\Core\MessengerInterface;
+use Drupal\Core\Messenger\Messenger;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Exception\ClientException;
@@ -44,14 +45,14 @@ class DependencyInjectionExerciseService implements DependencyInjectionExerciseS
   /**
    * The Logger service.
    *
-   * @var \Drupal\Core\Messenger\MessengerInterface
+   * @var @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
    */
   protected $diesLogger;
 
   /**
    * The Messenger service.
    *
-   * @var \Drupal\Core\Messenger\MessengerInterface
+   * @var \Drupal\Core\Messenger\Messenger
    */
   protected $diesMessenger;
 
@@ -74,7 +75,7 @@ class DependencyInjectionExerciseService implements DependencyInjectionExerciseS
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The Messenger service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, ClientInterface $http_client, LoggerChannelFactoryInterface $logger_factory, MessengerInterface $messenger) {
+  public function __construct(ConfigFactoryInterface $config_factory, ClientInterface $http_client, LoggerChannelFactoryInterface $logger_factory, Messenger $messenger) {
     $this->diesConfig = $config_factory->get('dependency_injection_exercise.settings');
     $this->diesClient = $http_client;
     $this->diesLogger = $logger_factory->get('dependency_injection_exercise');
@@ -113,11 +114,11 @@ class DependencyInjectionExerciseService implements DependencyInjectionExerciseS
    * @throws \GuzzleHttp\Exception\ServerException
    *   Throws up a Guzzle ServerException from 500 level errors.
    */
-  public function getResources(bool $randomize) {
+  public function getResources(bool $randomize): array {
     // Review if use random value or not.
     $page = $randomize ? random_int(1, 20) : 5;
     // Mount the required URL.
-    $this->diesUrl = $this->getConfig->get('target') . $page . '/photos';
+    $this->diesUrl = $this->diesConfig->get('target') . $page . '/photos';
 
     // Try to obtain the photo data via the external API.
     try {
@@ -168,7 +169,7 @@ class DependencyInjectionExerciseService implements DependencyInjectionExerciseS
    * @return array
    *   Returns a set of images.
    */
-  public function showPhotos(bool $randomize = FALSE) {
+  public function showPhotos(bool $randomize): array {
 
     $data = $this->getResources($randomize);
     if (array_key_exists('error', $data)) {
