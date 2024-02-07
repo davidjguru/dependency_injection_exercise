@@ -59,7 +59,7 @@ class RestOutputController extends ControllerBase {
    */
   public function getPhotos(): array {
     // Call to the processing method from Service.
-    return $diesResource->showPhotos();
+    return $this->diesResource->showPhotos(FALSE);
   }
 
 }
