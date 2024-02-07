@@ -15,6 +15,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\ServerException;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\MessengerInterface;
+use Drupal\Component\Serialization\Json;
 
 /**
  * Dependency Injection Exercise Service Class.
@@ -134,7 +135,7 @@ class DependencyInjectionExerciseService implements DependencyInjectionExerciseS
     // Try to obtain the photo data via the external API.
     try {
       $response = $this->diesClient->get($this->diesUrl);
-      $data = json_decode($response->getBody()->getContents());
+      $data = Json::decode($response->getBody()->getContents());
     }
 
     catch (ServerException $e) {
