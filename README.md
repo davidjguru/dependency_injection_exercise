@@ -14,9 +14,10 @@ It shows how to approach service implementation and adaptation tasks in the cont
 1. On the path /dropsolid/example/photos the breadcrumb should be Home > Dropsolid > Example > Photos
 1. Take over the LanguageManager service in a way that doesn't preclude others from also taking over the LanguageManager service
 
-## Questions 
+## Questions (Annotations of the rubber duck technique 🐤)
 
-* **Why are you defining an interface for the new service?** It is considered "best practice" to do so. See "Defining a service" in [api.drupal.org/container/9.4.x](https://api.drupal.org/api/drupal/core%21core.api.php/group/container/9.4.x).
+* **Why are you defining an interface for the new service?** It is considered "best practice" to do so. See "Defining a service" in [api.drupal.org/container/9.4.x](https://api.drupal.org/api/drupal/core%21core.api.php/group/container/9.4.x).  
+* **Are you using the logger to log messages?** Yes, although it is not used for production environments (dblog is usually disabled), I have found it useful in development environments to gather information.  
 
 ## Documentation
 
