@@ -18,6 +18,7 @@ It shows how to approach service implementation and adaptation tasks in the cont
 
 * **Why are you defining an interface for the new service?** It is considered "best practice" to do so. See "Defining a service" in [api.drupal.org/container/9.4.x](https://api.drupal.org/api/drupal/core%21core.api.php/group/container/9.4.x).  
 * **Are you using the logger to log messages?** Yes, although it is not used for production environments (dblog is usually disabled), I have found it useful in development environments to gather information.  
+* **Wait a minute, you're not implementing `ContainerInjectionInterface` in Controller!** Yes, indeed. Because I'm extending from `ControllerBase` class and this implements `ContainerInjectionInterface`. See [api.drupal.org/ControllerBase.php](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Controller%21ControllerBase.php/10).  
 
 ## Documentation
 
