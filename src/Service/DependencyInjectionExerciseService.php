@@ -180,7 +180,7 @@ class DependencyInjectionExerciseService implements DependencyInjectionExerciseS
    * @return array
    *   Returns a set of images.
    */
-  public function showPhotos(bool $randomize) {
+  public function showPhotos(bool $randomize=NULL) {
 
     $data = $this->getResources($randomize);
     if(array_key_exists('error', $data)) {
