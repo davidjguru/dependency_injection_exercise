@@ -31,7 +31,7 @@ git checkout refactor/rebuild_feature_as_service
 
 ## Extra
 
-1. Review and clean related menu item 'Photos' when install and uninstall from hooks in `.install` file.
+1. Review and clean related menu item 'Photos' when install and uninstall from hooks in `.install` file. You can see the change [here](https://github.com/davidjguru/dependency_injection_exercise/commit/b0c35a192493ad26fa90969f6ad02719f988a115).
 
 ## TODO
 
