@@ -2,36 +2,51 @@
 
 namespace Drupal\dependency_injection_exercise\Breadcrumb;
 
-
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Routing\RouteMatchInterface;
 
-
+/**
+ * Dependency Injection Exercise Breadcrumb Class.
+ *
+ * PHP version 8.1.23
+ *
+ * @category Class
+ * @package DependencyInjectionExercise
+ * @author David Rodríguez, @davidjguru
+ * @link https://therussianlullaby.com
+ */
 class DependencyInjectionExerciseBreadcrumbBuilder implements BreadcrumbBuilderInterface {
+
   /**
    * {@inheritdoc}
    */
-  public function applies(RouteMatchInterface $attributes) {
-    // TODO: Add some logic here in order to check if applies or not.
-    // It must return a BOOLEAN TRUE or FALSE.
+  public function applies(RouteMatchInterface $route_match) {
+    // Only work with the registered route.
+    if ($route_match->getRouteName() !== 'dependency_injection_exercise.rest_output_controller_photos') {
+      return FALSE;
+    }
+
+    return TRUE;
   }
 
   /**
    * {@inheritdoc}
    */
   public function build(RouteMatchInterface $route_match) {
+    // Prepare breadcrumb.
     $breadcrumb = new Breadcrumb();
-    // Add link to the homepage as first crumb.
-    $breadcrumb->addLink(Link::createFromRoute('Home', '<front>'));
-    // TODO: Add some logic here.
-
-    // Add cache control.
     $breadcrumb->addCacheContexts(['route']);
+    $node = $route_match->getParameter('node');
+    $breadcrumb->addCacheableDependency($node);
+    // Add the required items to the breadcrum.
+    $breadcrumb->addLink(Link::createFromRoute('Home', '<none>'));
+    $breadcrumb->addLink(Link::createFromRoute('Dropsolid', '<none>'));
+    $breadcrumb->addLink(Link::createFromRoute('Example', '<none>'));
+    $breadcrumb->addLink(Link::createFromRoute('Photos', '<none>'));
 
     return $breadcrumb;
   }
 
 }
-
