@@ -45,7 +45,7 @@ class DependencyInjectionExerciseService implements DependencyInjectionExerciseS
   /**
    * The Logger service.
    *
-   * @var @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
+   * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
    */
   protected $diesLogger;
 
