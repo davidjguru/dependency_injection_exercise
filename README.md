@@ -47,3 +47,4 @@ Remember that the initial status of the exercises can be seen in the [main](http
 
 - [Services and dependency injection in Drupal 8+](https://www.drupal.org/docs/drupal-apis/services-and-dependency-injection/services-and-dependency-injection-in-drupal-8)
 - [Altering existing services, providing dynamic services](https://www.drupal.org/docs/drupal-apis/services-and-dependency-injection/altering-existing-services-providing-dynamic-services)
+- (Drupal 8: Service Decorators)[https://www.axelerant.com/blog/drupal-8-service-decorators]
