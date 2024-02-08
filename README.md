@@ -16,6 +16,12 @@ For instance, you can check the first exercise (see next section) by moving to t
 git checkout refactor/rebuild_feature_as_service
 ```
 
+Remember that the initial status of the exercises can be seen in the [main](https://github.com/davidjguru/dependency_injection_exercise/tree/main) branch. And the final status with the successive merges of working branches is available in the [merged/final_status](https://github.com/davidjguru/dependency_injection_exercise/tree/merged/final_status) branch.
+
+**Working branches:**
+- refactor/rebuild_feature_as_service
+- feature/custom_breadcrumb 
+
 ## Exercises
 
 1. We've got a controller and block, both outputting roughly the same thing. Please refactor these so the call to fetch data happens in a service. Then, inject that service in both the controller and block instead of using \Drupal::service()
