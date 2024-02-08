@@ -2,3 +2,7 @@ services:
   dependency_injection_exercise.api_client: 
     class: Drupal\dependency_injection_exercise\Service\DependencyInjectionExerciseService
     arguments: ['@config.factory', '@http_client', '@logger.factory', '@messenger']
+  dependency_injection_exercise.breadcrumb:
+   class: Drupal\dependency_injection_exercise\Breadcrumb\DependencyInjectionExerciseBreadcrumbBuilder
+   tags:
+    - { name: breadcrumb_builder, priority: 100 }
