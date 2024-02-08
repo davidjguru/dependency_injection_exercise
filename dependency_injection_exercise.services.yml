@@ -1,0 +1,6 @@
+services:
+ dependency_injection_exercise.breadcrumb:
+   class: Drupal\dependency_injection_exercise\Breadcrumb\DependencyInjectionExerciseBreadcrumbBuilder
+   tags:
+    - { name: breadcrumb_builder, priority: 100 }
+
