@@ -1,7 +1,0 @@
-services:
-  dependency_injection_exercise.language_manager:
-    class: Drupal\dependency_injection_exercise\Service\LanguageManagerDecorator
-    decorates: language_manager
-    decoration_priority: 9
-    public: false
-    arguments: ['@dependency_injection_exercise.language_manager.inner', '@language.default']
