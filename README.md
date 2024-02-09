@@ -4,6 +4,7 @@ It shows how to approach service implementation and adaptation tasks in the cont
 ## Setup
 
 1. Clone the repository within the `/web/modules/custom/` path.
+1. Move to the final branch `git checkout  merged/final_status`.
 1. Install this module enabling the resource. Run `drush en dependency_injection_exercise`.
 1. Add the new provided custom block 'Rest output block' to a page.
 
