@@ -23,6 +23,7 @@ Remember that the initial status of the exercises can be seen in the [main](http
 - refactor/rebuild_feature_as_service
 - feature/custom_breadcrumb
 - feature/decorating_service
+- feature/overriding_service
 
 ## Exercises
 
