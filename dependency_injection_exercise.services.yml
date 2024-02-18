@@ -11,4 +11,4 @@ services:
     decorates: language_manager
     decoration_priority: 9
     public: false
-    arguments: ['@dependency_injection_exercise.language_manager.inner', '@language.default']s
+    arguments: ['@dependency_injection_exercise.language_manager.inner', '@language.default']
