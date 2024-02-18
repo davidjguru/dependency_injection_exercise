@@ -12,3 +12,6 @@ services:
     decoration_priority: 9
     public: false
     arguments: ['@dependency_injection_exercise.language_manager.inner', '@language.default']
+  plugin.manager.mail:
+    class: Drupal\dependency_injection_exercise\Service\DependencyInjectionExerciseMailManager
+    arguments: ['@container.namespaces', '@cache.discovery', '@module_handler', '@config.factory', '@logger.factory', '@string_translation', '@renderer']
