@@ -26,10 +26,13 @@ Remember that the initial status of the exercises can be seen in the [main](http
 
 ## Exercises
 
-1. We've got a controller and block, both outputting roughly the same thing. Please refactor these so the call to fetch data happens in a service. Then, inject that service in both the controller and block instead of using \Drupal::service(). **Branch:** `refactor/rebuild_feature_as_service`.
-1. Take over the MailManager service and ensure all mails are redirected to "nope@doesntexist.com"
-1. On the path /dropsolid/example/photos the breadcrumb should be Home > Dropsolid > Example > Photos. **Branch:** `feature/custom_breadcrumb`.
-1. Take over the LanguageManager service in a way that doesn't preclude others from also taking over the LanguageManager service. **Branch:** `feature/decorating_service`.
+1. We've got a controller and block, both outputting roughly the same thing. Please refactor these so the call to fetch data happens in a service. Then, inject that service in both the controller and block instead of using \Drupal::service().  
+**Branch:** `refactor/rebuild_feature_as_service`.
+1. Take over the MailManager service and ensure all mails are redirected to "nope@doesntexist.com".  
+**Branch:** `feature/overriding_service`.
+1. On the path /dropsolid/example/photos the breadcrumb should be Home > Dropsolid > Example > Photos.  
+**Branch:** `feature/custom_breadcrumb`.
+1. Take over the LanguageManager service in a way that doesn't preclude others from also taking over the LanguageManager service.  **Branch:** `feature/decorating_service`.
 
 ## Questions (Annotations of the rubber duck technique 🐤)
 
@@ -46,10 +49,12 @@ Remember that the initial status of the exercises can be seen in the [main](http
 
 1. Add some unit testing in order to execute automatized checks of the features.
 1. Beyond ego-trippin', the `@author` tags are not validated in Drupal codestyle, please remove them ASAP.
-1. Implement some way to call the LanguageManager decorator, invoking its `getStandardLanguageList()` method and see results of the implemented change.
+1. Implement some way to call the LanguageManager decorator, invoking its `getStandardLanguageList()` method and see results of the implemented change.  
+1. Enable 'autowire' in services where it is possible to do so.
 
 ## Documentation
 
 - [Services and dependency injection in Drupal 8+](https://www.drupal.org/docs/drupal-apis/services-and-dependency-injection/services-and-dependency-injection-in-drupal-8)
 - [Altering existing services, providing dynamic services](https://www.drupal.org/docs/drupal-apis/services-and-dependency-injection/altering-existing-services-providing-dynamic-services)
-- [Drupal 8: Service Decorators](https://www.axelerant.com/blog/drupal-8-service-decorators)
+- [Drupal 8: Service Decorators](https://www.axelerant.com/blog/drupal-8-service-decorators)  
+- [What is Autowiring? how to use Autowire in Drupal](https://www.yuseferi.com/en/blog/What-Autowiring-how-use-Autowire-Drupal)  
