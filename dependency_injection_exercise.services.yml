@@ -1,0 +1,17 @@
+services:
+  dependency_injection_exercise.api_client:
+    class: Drupal\dependency_injection_exercise\Service\DependencyInjectionExerciseService
+    arguments: ['@config.factory', '@http_client', '@logger.factory', '@messenger']
+  dependency_injection_exercise.breadcrumb:
+   class: Drupal\dependency_injection_exercise\Breadcrumb\DependencyInjectionExerciseBreadcrumbBuilder
+   tags:
+    - { name: breadcrumb_builder, priority: 100 }
+  dependency_injection_exercise.language_manager:
+    class: Drupal\dependency_injection_exercise\Service\LanguageManagerDecorator
+    decorates: language_manager
+    decoration_priority: 9
+    public: false
+    arguments: ['@dependency_injection_exercise.language_manager.inner', '@language.default']
+  plugin.manager.mail:
+    class: Drupal\dependency_injection_exercise\Service\DependencyInjectionExerciseMailManager
+    arguments: ['@container.namespaces', '@cache.discovery', '@module_handler', '@config.factory', '@logger.factory', '@string_translation', '@renderer']

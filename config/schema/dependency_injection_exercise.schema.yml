@@ -1,0 +1,7 @@
+dependency_injection_exercise.settings:
+  type: config_object
+  label: 'Dependency Injection Exercise Settings'
+  mapping:
+    target: 
+      type: string
+      label: 'URL to make request.'
