@@ -41,11 +41,11 @@ Remember that the initial status of the exercises can be seen in the [main](http
 * **Are you using the logger to log messages?** Yes, although it is not used for production environments (dblog is usually disabled), I have found it useful in development environments to gather information.  
 * **Wait a minute, you're not implementing `ContainerInjectionInterface` in Controller!** Yes, indeed. Because I'm extending from `ControllerBase` class and this implements `ContainerInjectionInterface`. See [api.drupal.org/ControllerBase.php](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Controller%21ControllerBase.php/10).  
 * **What changes did you make to LanguageManager?** I've implemented a service decorator to alter its `getStandardLanguageList()` method, adding a new language to its listing. You can see the change [here](https://github.com/davidjguru/dependency_injection_exercise/blob/15af3554162344182f155a8c1c67c6fb8c77b944/src/Service/LanguageManagerDecorator.php#L53).  
-**What approach have you used to alter the MailManager.php based service?** Well, from two widely used approaches:  
-1. Creation a new custom `ServiceProvider.php` class.
-1. Override core service using `*.services.yml` file.
+* **What approach have you used to alter the MailManager.php based service?** Well, from two widely used approaches:  
+  1. Creation a new custom `ServiceProvider.php` class.
+  1. Override core service using `*.services.yml` file.
 
-I have used the latter option, as it seemed to me more natural and integrated with the approach of the exercise in general, regarding operating on the services description `dependency_injection_exercise.services.yml` file.  
+  I have used the latter option, as it seemed to me more natural and integrated with the approach of the exercise in general, regarding operating on the services description `dependency_injection_exercise.services.yml` file.  
 
 ## Extra
 
