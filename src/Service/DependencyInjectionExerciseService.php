@@ -125,37 +125,12 @@ class DependencyInjectionExerciseService implements DependencyInjectionExerciseS
       $response = $this->cient->get($this->url);
       $data = Json::decode($response->getBody()->getContents());
     }
-
-    catch (ServerException $e) {
-      $this->logger->error($this->t('ServerException - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
-      $this->messenger->addMessage($this->t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
-      $data['error'] = $this->t('Message: @error', ['@error' => $e->getMessage()]);
+    catch (ServerException | ClientException | BadResponseException | RequestException | GuzzleException | Exception $e) {
+        $this->logger->error($this->t('Exception - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
+        $this->messenger->addMessage($this->t('We are experiencing technical problems.'), 'error');
+        $data['error'] = $this->t('Message: @error', ['@error' => $e->getMessage()]);
     }
-    catch (ClientException $e) {
-      $this->logger->error($this->t('ClientException - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
-      $this->messenger->addMessage($this->t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
-      $data['error'] = $this->t('Message: @error', ['@error' => $e->getMessage()]);
-    }
-    catch (BadResponseException $e) {
-      $this->logger->error($this->t('BadResponseException - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
-      $this->messenger->addMessage($this->t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
-      $data['error'] = $this->t('Message: @error', ['@error' => $e->getMessage()]);
-    }
-    catch (RequestException $e) {
-      $this->logger->error($this->t('Request Exception - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
-      $this->messenger->addMessage($this->t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
-      $data['error'] = $this->t('Message: @error', ['@error' => $e->getMessage()]);
-    }
-    catch (GuzzleException $e) {
-      $this->logger->error($this->t('GuzzleException - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
-      $this->messenger->addMessage($this->t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
-      $data['error'] = $this->t('Message: @error', ['@error' => $e->getMessage()]);
-    }
-    catch (Exception $e) {
-      $this->logger->error($this->t('Exception - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
-      $this->messenger->addMessage($this->t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
-      $data['error'] = $this->t('Message: @error', ['@error' => $e->getMessage()]);
-    } finally {
+    finally {
       return $data;
     }
   }
