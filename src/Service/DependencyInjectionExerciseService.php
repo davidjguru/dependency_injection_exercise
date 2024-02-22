@@ -33,35 +33,35 @@ class DependencyInjectionExerciseService implements DependencyInjectionExerciseS
    *
    * @var \Drupal\Core\Config\InmutableConfig
    */
-  protected $diesConfig;
+  protected $config;
 
   /**
    * HTTP Client.
    *
    * @var \GuzzleHttp\ClientInterface
    */
-  protected $diesClient;
+  protected $client;
 
   /**
    * The Logger service.
    *
    * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
    */
-  protected $diesLogger;
+  protected $logger;
 
   /**
    * The Messenger service.
    *
    * @var \Drupal\Core\Messenger\Messenger
    */
-  protected $diesMessenger;
+  protected $messenger;
 
   /**
    * Url for the external connection.
    *
    * @var string
    */
-  protected $diesUrl;
+  protected $url;
 
   /**
    * DependencyInjectionExerciseService constructor.
@@ -76,10 +76,10 @@ class DependencyInjectionExerciseService implements DependencyInjectionExerciseS
    *   The Messenger service.
    */
   public function __construct(ConfigFactoryInterface $config_factory, ClientInterface $http_client, LoggerChannelFactoryInterface $logger_factory, Messenger $messenger) {
-    $this->diesConfig = $config_factory->get('dependency_injection_exercise.settings');
-    $this->diesClient = $http_client;
-    $this->diesLogger = $logger_factory->get('dependency_injection_exercise');
-    $this->diesMessenger = $messenger;
+    $this->config = $config_factory->get('dependency_injection_exercise.settings');
+    $this->client = $http_client;
+    $this->logger = $logger_factory->get('dependency_injection_exercise');
+    $this->messenger = $messenger;
   }
 
   /**
@@ -89,7 +89,7 @@ class DependencyInjectionExerciseService implements DependencyInjectionExerciseS
    *   Dependency Injection Exercise configuration object.
    */
   public function getConfig(): ImmutableConfig {
-    return $this->diesConfig;
+    return $this->config;
   }
 
   /**
@@ -118,44 +118,19 @@ class DependencyInjectionExerciseService implements DependencyInjectionExerciseS
     // Review if use random value or not.
     $page = $randomize ? random_int(1, 20) : 5;
     // Mount the required URL.
-    $this->diesUrl = $this->diesConfig->get('target') . $page . '/photos';
+    $this->url = $this->config->get('target') . '/albums/' . $page . '/photos';
 
     // Try to obtain the photo data via the external API.
     try {
-      $response = $this->diesClient->get($this->diesUrl);
+      $response = $this->cient->get($this->url);
       $data = Json::decode($response->getBody()->getContents());
     }
-
-    catch (ServerException $e) {
-      $this->diesLogger->error($this->t('ServerException - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
-      $this->diesMessenger->addMessage($this->t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
-      $data['error'] = $this->t('Message: @error', ['@error' => $e->getMessage()]);
+    catch (ServerException | ClientException | BadResponseException | RequestException | GuzzleException | Exception $e) {
+        $this->logger->error($this->t('Exception - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
+        $this->messenger->addMessage($this->t('We are experiencing technical problems.'), 'error');
+        $data['error'] = $this->t('Message: @error', ['@error' => $e->getMessage()]);
     }
-    catch (ClientException $e) {
-      $this->diesLogger->error($this->t('ClientException - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
-      $this->diesMessenger->addMessage($this->t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
-      $data['error'] = $this->t('Message: @error', ['@error' => $e->getMessage()]);
-    }
-    catch (BadResponseException $e) {
-      $this->diesLogger->error($this->t('BadResponseException - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
-      $this->diesMessenger->addMessage($this->t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
-      $data['error'] = $this->t('Message: @error', ['@error' => $e->getMessage()]);
-    }
-    catch (RequestException $e) {
-      $this->diesLogger->error($this->t('Request Exception - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
-      $this->diesMessenger->addMessage($this->t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
-      $data['error'] = $this->t('Message: @error', ['@error' => $e->getMessage()]);
-    }
-    catch (GuzzleException $e) {
-      $this->diesLogger->error($this->t('GuzzleException - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
-      $this->diesMessenger->addMessage($this->t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
-      $data['error'] = $this->t('Message: @error', ['@error' => $e->getMessage()]);
-    }
-    catch (Exception $e) {
-      $this->diesLogger->error($this->t('Exception - Error getting resources, error: @error'), ['@error' => $e->getMessage()]);
-      $this->diesMessenger->addMessage($this->t('We are experiencing technical problems, please try again after a few minutes.'), 'error');
-      $data['error'] = $this->t('Message: @error', ['@error' => $e->getMessage()]);
-    } finally {
+    finally {
       return $data;
     }
   }
@@ -177,7 +152,7 @@ class DependencyInjectionExerciseService implements DependencyInjectionExerciseS
       $build['error'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $this->t('No photos available. Error: @erro', ['@error' => $data['error']]),
+        '#value' => $this->t('No photos available. Error: @error', ['@error' => $data['error']]),
       ];
     }
     else {
