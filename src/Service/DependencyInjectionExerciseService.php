@@ -118,7 +118,7 @@ class DependencyInjectionExerciseService implements DependencyInjectionExerciseS
     // Review if use random value or not.
     $page = $randomize ? random_int(1, 20) : 5;
     // Mount the required URL.
-    $this->url = $this->config->get('target') . $page . '/photos';
+    $this->url = $this->config->get('target') . '/albums/' . $page . '/photos';
 
     // Try to obtain the photo data via the external API.
     try {
