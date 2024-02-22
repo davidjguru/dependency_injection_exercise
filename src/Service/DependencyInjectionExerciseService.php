@@ -177,7 +177,7 @@ class DependencyInjectionExerciseService implements DependencyInjectionExerciseS
       $build['error'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $this->t('No photos available. Error: @erro', ['@error' => $data['error']]),
+        '#value' => $this->t('No photos available. Error: @error', ['@error' => $data['error']]),
       ];
     }
     else {
