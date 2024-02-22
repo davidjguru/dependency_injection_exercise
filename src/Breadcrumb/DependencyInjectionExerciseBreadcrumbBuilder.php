@@ -24,11 +24,7 @@ class DependencyInjectionExerciseBreadcrumbBuilder implements BreadcrumbBuilderI
    */
   public function applies(RouteMatchInterface $route_match) {
     // Only work with the registered route.
-    if ($route_match->getRouteName() !== 'dependency_injection_exercise.rest_output_controller_photos') {
-      return FALSE;
-    }
-
-    return TRUE;
+    return ($route_match->getRouteName() === 'dependency_injection_exercise.rest_output_controller_photos');
   }
 
   /**
